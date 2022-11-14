@@ -1,7 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import PatientNavbar from './components/PatientNavbar/PatientNavbar';
+import PatientDashBoard from './components/PatientDashBoard/PatientDashBoard';
 import SignIn from './components/SignIn/SignIn';
+import SignUp from './components/SignUp/SignUp';
 import { Route, Routes } from 'react-router-dom';
 
 
@@ -10,9 +11,9 @@ function App() {
   return (
     <div className="">
       <Routes>
-        <Route path="/" element={<PatientNavbar/>}/>
+        <Route path="/" element={<PatientDashBoard/>}/>
         <Route path="/signin" element={<SignIn/>}/>
-        <Route path="/signup" element={<PatientNavbar/>}/>
+        <Route path="/signup" element={<SignUp/>}/>
       </Routes>
     </div>
   );

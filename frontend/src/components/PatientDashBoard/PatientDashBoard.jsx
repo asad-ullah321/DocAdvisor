@@ -16,14 +16,14 @@ import Col from 'react-bootstrap/Col';
 
 
 
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.svg"
 const PatientNavbar = () => {
   return (
     <div>
         {/* Navbar */}
       <Navbar bg="light" expand="md">
         <Container>
-          <Navbar.Brand href="#home"><img src={logo} alt="DocAdvisor" /></Navbar.Brand>
+          <Navbar.Brand href="#home"><img className="img-fluid logo" src={logo} alt="DocAdvisor" /></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Container>
             <Navbar.Collapse id="basic-navbar-nav">
