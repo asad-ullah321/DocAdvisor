@@ -3,7 +3,16 @@ import { useState } from "react";
 import "./signup.css";
 import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router-dom";
+import useCookies from "react-cookie/cjs/useCookies";
+
+
+
+
+
+
 const SignUp = () => {
+
+  const [cookies, setCookie] = useCookies(['user']);
   const navigate = useNavigate();
   const [resStatus, setresStatus]= useState(null); 
   const [formData, setFormData] = useState({
@@ -62,9 +71,12 @@ const SignUp = () => {
           data.append("qualification", formData.qualification);
           data.append("phoneNumber", formData.phoneNumber);
           data.append("password", formData.password);
+        
+        
           fetch("http://localhost:5000/api/user/signUp", {
             method: "post",
             body: data,
+            
           })
             .then((res) => {
               setresStatus(res.status);
@@ -73,7 +85,9 @@ const SignUp = () => {
             })
             .then((resBody) => {
               console.log(resBody);
-              navigate(`${resBody.nextroute}`);
+              setCookie('token', resBody.authToken,{path:'/'});
+              navigate(`${resBody.nextroute}`,{state:{email:resBody.email}});
+
             })
             .catch((err) => {
               console.log("error: " + err);

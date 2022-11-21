@@ -1,14 +1,15 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
+
+import userlogo from '../../assets/stethoscope.png'
 import "./navbar.css";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/esm/Button";
-
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
@@ -16,8 +17,16 @@ import Col from 'react-bootstrap/Col';
 
 
 
+
+
 import logo from "../../assets/logo.svg"
 const PatientNavbar = () => {
+  /*---User Name---*/
+  const location = useLocation();
+  const email = location.state.email;
+
+
+  
   return (
     <div>
         {/* Navbar */}
@@ -62,7 +71,10 @@ const PatientNavbar = () => {
               </Nav>
             </Navbar.Collapse>
           </Container>
+          
         </Container>
+        <div className='pe-4 d-flex'><img src={userlogo} alt="" className="pe-1"/>{email}</div>
+
       </Navbar>
 
 

@@ -1,22 +1,18 @@
-const mysql = require("mysql");
+const Sequelize = require("sequelize");
+const sequelize = new Sequelize(
+ 'docadvisor',
+ 'root',
+ '',
+  {
+    host: 'localhost',
+    dialect: 'mysql'
+  }
+);
 
-const connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: ""
-});
+sequelize.authenticate().then(() => {
+    console.log('Connection has been established successfully.');
+ }).catch((error) => {
+    console.error('Unable to connect to the database: ', error);
+ });
 
-connection.connect(function(err){
-    if(err)
-    {
-        console.log("Database Connection Failed!");
-        throw err;
-    }
-    else
-    {
-        console.log("Database Connected!");
-    }
-})
-
-module.exports = connection;
+module.exports = sequelize;
