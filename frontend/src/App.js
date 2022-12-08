@@ -54,9 +54,7 @@ function App() {
        <Route path="/home" element={<Home socket={socket}/>}></Route>
        <Route path="/chat" element={<ChatPage socket={socket}/>}></Route>
 
-        <Route path="/verification" element={<Verification/>}/>
-        <Route path="/verificationDoc" element={<VerificationDoc/>}/>
-        <Route path="/verificationAdmin" element={<VerificationAdmin/>}/>
+        
 
         <Route path="/signin/forget/v1" element={<ForgetPassword1/>}/>
         <Route path="/signin/forget/v2" element={<ForgetPassword2/>}/>
@@ -66,6 +64,12 @@ function App() {
         <Route path="/signin/forget/v1Pat" element={<ForgetPassword1P/>}/>
         <Route path="/signin/forget/v2Pat" element={<ForgetPassword2P/>}/>
         <Route path="/signin/forget/v3Pat" element={<ForgetPassword3P/>}/>
+
+        <Route path="/verification" element={<Verification/>}/>
+        <Route path="/verificationDoc" element={<VerificationDoc/>}/>
+        <Route path="/verificationAdmin" element={<VerificationAdmin/>}/>
+      
+      
       </Routes>
       </CookiesProvider>
     </div>
