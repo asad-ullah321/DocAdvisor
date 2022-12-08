@@ -8,7 +8,7 @@ verifyAuthAdmin = (req, res, next) => {
     .then(() => {
       VerCode.findOne({
         where: {
-          email: req.body.email,
+          email: "host@host.com",
         },
       })
         .then((data) => {

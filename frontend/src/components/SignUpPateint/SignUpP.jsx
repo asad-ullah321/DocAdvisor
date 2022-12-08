@@ -84,12 +84,12 @@ const SignUp = () => {
             .then((resBody) => {
               console.log(resBody);
               setCookie('token', resBody.authToken,{path:'/'});
-              navigate(`${resBody.nextroute}`,{state:{email:resBody.email}});
+              navigate('/verification',{state:{email:resBody.email}});
 
             })
             .catch((err) => {
               console.log("error: " + err);
-              navigate("/signup");
+              navigate("/signupPat");
               setErrorMessage(`ERROR: ${resStatus}`);
               handleShow();
             })

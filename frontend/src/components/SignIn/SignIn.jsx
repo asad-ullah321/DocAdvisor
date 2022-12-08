@@ -8,6 +8,7 @@ import { Modal } from "react-bootstrap";
 
 const SignIn = () => {
   const [cookies, setCookie] = useCookies(["user"]);
+  
   const navigate = useNavigate();
   const [resStatus, setresStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -58,6 +59,7 @@ const SignIn = () => {
           if (resBody.nextroute === "/verification") 
           {
           setCookie("token", resBody.authToken, { path: "/" });
+          setCookie("username", resBody.email, { path: "/" });
             navigate(`${resBody.nextroute}`, {
               state: { email: resBody.email },
             });
@@ -74,8 +76,9 @@ const SignIn = () => {
           }
           else if(resBody.nextroute==='/')
           {
+          setCookie("username", resBody.email, { path: "/" });
           setCookie("token", resBody.authToken, { path: "/" });
-          navigate(`${resBody.nextroute}`, {state: { email: resBody.email }});
+          navigate('/DoctorDashBoard', {state: { email: resBody.email }});
           }
         })
         .catch((err) => {

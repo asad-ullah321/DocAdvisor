@@ -21,10 +21,16 @@ import { Alert, Modal } from "react-bootstrap";
 import logo from "../../assets/logo.svg";
 const DoctorDashboard = () => {
   /*---User Name---*/
-  //const location = useLocation();
-  //const email = location.state.email;
+  
   const cookies = new Cookies();
 
+  const [username, setUserName]= useState();
+  useEffect(()=>{
+
+    const mail = cookies.get("username");
+    setUserName(mail);
+
+  },[])
   //const [doctors, setDoctors] = useState([1, 2]);
   const [slots, setSlots] = useState(1);
   // const [slotsInput, setSlotsInput] = useState("");
@@ -282,7 +288,7 @@ const DoctorDashboard = () => {
             </Navbar.Collapse>
           </Container>
         </Container>
-        {/*<div className='pe-4 d-flex'><img src={userlogo} alt="" className="pe-1"/>{email}</div>*/}
+        <div className='pe-4 d-flex'><img src={userlogo} alt="" className="pe-1"/>{username}</div>
       </Navbar>
 
       {/* Jumbotron */}

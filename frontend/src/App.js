@@ -37,9 +37,10 @@ function App() {
     <div className="">
       <CookiesProvider>
       <Routes>
-        <Route path="/" element={<PatientDashBoard/>}/>
+       {/*<Route path="/" element={<PatientDashBoard/>}/>*/}
+        <Route path="/PatientDashBoard" element={<PatientDashBoard/>}/>
         <Route path='/DoctorDashBoard' element={<DoctorDashboard/>}/>
-        <Route path="/signin" element={<SignIn/>}/>
+        <Route path="/signin/doctor" element={<SignIn/>}/>
         <Route path="/signin/pateint" element={<SignInPateint/>}/>
         <Route path="/signupPat" element={<SignUpPateint/>}/>
         <Route path="/signup" element={<SignUp/>}/>

@@ -20,9 +20,7 @@ import { Cookies } from "react-cookie";
 
 import logo from "../../assets/logo.svg";
 const PatientNavbar = () => {
-  /*---User Name---*/
-  //const location = useLocation();
-  //const email = location.state.email;
+  
   const cookies = new Cookies();
   const [doctors, setDoctors] = useState([1, 2]);
   const [appointmentModel, setappointmentModel] = useState({
@@ -31,6 +29,13 @@ const PatientNavbar = () => {
     fee: "",
     email: "",
   });
+  const [username, setUserName]= useState();
+  useEffect(()=>{
+
+    const mail = cookies.get("username");
+    setUserName(mail);
+
+  },[])
   const [date, setDate] = useState("");
   const [slot, setSlot] = useState("");
   const [slots, setSlots] = useState([]);
@@ -289,7 +294,7 @@ const PatientNavbar = () => {
             </Navbar.Collapse>
           </Container>
         </Container>
-        {/*<div className='pe-4 d-flex'><img src={userlogo} alt="" className="pe-1"/>{email}</div>*/}
+        <div className='pe-4 d-flex'><img src={userlogo} alt="" className="pe-1"/>{username}</div>
       </Navbar>
 
       {/* Jumbotron */}

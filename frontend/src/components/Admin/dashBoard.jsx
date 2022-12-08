@@ -18,8 +18,8 @@ import {useNavigate} from "react-router-dom"
 import logo from "../../assets/logo.svg"
 const PatientNavbar = ({socket}) => {
   /*---User Name---*/
-  const location = useLocation();
-  const email = location.state.email;    const navigate = useNavigate()
+  
+  const navigate = useNavigate()
   const [userName, setUserName] = useState("");
 
   const handleSubmit = (e) => {
@@ -63,7 +63,7 @@ const PatientNavbar = ({socket}) => {
                 </NavDropdown>
 
                 <NavDropdown title="Insert Medicine" id="chat-nav-dropdown">
-                  <NavDropdown.Item href="/removeDoc">Insert Medicine</NavDropdown.Item>
+                  <NavDropdown.Item href="/insertMed">Insert Medicine</NavDropdown.Item>
                 </NavDropdown>
 
 

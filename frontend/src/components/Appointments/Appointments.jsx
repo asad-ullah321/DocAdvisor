@@ -13,6 +13,8 @@ import Card from "react-bootstrap/Card";
 import Cookies from "universal-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import userlogo from "../../assets/stethoscope.png";
+
 const Appointments = () => {
   const cookies = new Cookies();
   const navigate = useNavigate();
@@ -24,6 +26,15 @@ const Appointments = () => {
   const [comments, setComments] = useState([]);
   const [replies, setreplies] = useState([]);
   const [replyCommentid, setreplyCommentid] = useState([]);
+
+
+  const [username, setUserName]= useState();
+  useEffect(()=>{
+
+    const mail = cookies.get("username");
+    setUserName(mail);
+
+  },[])
   /* fecth all appointments */
   const fetchappointments = () => {
     const token = cookies.get("token");
@@ -201,7 +212,7 @@ const Appointments = () => {
             </Navbar.Collapse>
           </Container>
         </Container>
-        {/*<div className='pe-4 d-flex'><img src={userlogo} alt="" className="pe-1"/>{email}</div>*/}
+        <div className='pe-4 d-flex'><img src={userlogo} alt="" className="pe-1"/>{username}</div>
       </Navbar>
       <Container className="m-5">
         {appointment.map((ap, i) => (

@@ -58,6 +58,8 @@ const SignIn = () => {
           if (resBody.nextroute === "/verification") 
           {
           setCookie("token", resBody.authToken, { path: "/" });
+          setCookie("username", resBody.username, { path: "/" });
+
             navigate(`${resBody.nextroute}`, {
               state: { email: resBody.email },
             });
@@ -70,8 +72,9 @@ const SignIn = () => {
           }
           else if(resBody.nextroute==='/')
           {
+          setCookie("username", resBody.email, { path: "/" });
           setCookie("token", resBody.authToken, { path: "/" });
-          navigate(`${resBody.nextroute}`, {state: { email: resBody.email }});
+          navigate('/PatientDashBoard', {state: { email: resBody.email }});
           }
         })
         .catch((err) => {
