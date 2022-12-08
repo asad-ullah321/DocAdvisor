@@ -27,7 +27,7 @@ These are the softwares you need to install before getting started.
 - NodeJS
 - NPM
 - MySQL
-- REACT
+- REACT.js
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
