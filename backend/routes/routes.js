@@ -5,6 +5,8 @@ const multer = require("multer");
 const regContr = require('../controllers/register.contr');
 const signinContr = require('../controllers/signin.contr')
 const pasResetContr = require('../controllers/passwordReset')
+const doctorContr = require('../controllers/doctor')
+const patientContr = require('../controllers/patient')
 const cookieParser = require("cookie-parser");
 const session = require('express-session');
 
@@ -46,6 +48,29 @@ router.post("/signin",[verifyAuth] ,signinContr.signin);
 router.post("/signin/forget/v1", pasResetContr.sendRecoveryCode);
 router.post("/signin/forget/v2", pasResetContr.verifyRecoveryCode);
 router.post("/signin/forget/v3", pasResetContr.resetPassword);
+router.post("/addSlots", doctorContr.addSlots);
+
+
+router.post("/fetchdoctors", patientContr.fetchDoctors)
+router.post("/fetchslots", patientContr.fetchslots)
+router.post("/bookslot", patientContr.bookslot)
+router.post("/fetchappointments", patientContr.fetchappointments)
+router.post("/addcomment", patientContr.addComment)
+router.post("/addreply", patientContr.addreply)
+router.post("/fetchcomment", patientContr.fetchcomments)
+router.post("/fetchreply", patientContr.fetchreply)
+router.post("/updaterating", patientContr.updateRating)
+router.post("/fetchAllComments", patientContr.fetchAllComments)
+router.post("/rating", patientContr.rating)
+
+
+
+
+
+
+
+
+
 
 
 

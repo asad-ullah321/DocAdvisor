@@ -64,6 +64,10 @@ const SignIn = () => {
           } 
           else if (resBody.nextroute === "/signup" || resBody.nextroute ==='/signin') 
           {
+            setFormData({
+              email: "",
+              password: "",
+            });
             setErrorMessage('Invalid email or password');
             handleShow();
           }
@@ -125,6 +129,7 @@ const SignIn = () => {
                     className="form-control form-control-md"
                     placeholder="Enter a valid email address"
                     onChange={(e) => handleChange(e)}
+                    value={formData.email}
                   />
                 </div>
 
@@ -140,15 +145,17 @@ const SignIn = () => {
                     className="form-control form-control-md"
                     placeholder="Enter password"
                     onChange={(e) => handleChange(e)}
+                    value={formData.password}
+                    
                   />
                 </div>
 
                 <div className="d-flex justify-content-between align-items-center">
                   {/*<!-- Checkbox -->*/}
 
-                  <a onClick={""} className="text-body">
+                  <Link to="/signin/forget/v1" className="text-body">
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
 
                 <div className="text-center text-lg-start mt-4 pt-2">

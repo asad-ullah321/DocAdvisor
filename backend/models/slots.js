@@ -10,15 +10,14 @@ sequelize
     console.error("Unable to connect to the database: ", error);
   });
 
-const Doctor = sequelize.define("Doctor", {
-  name: {
+const Slots = sequelize.define("Slots", {
+  date: {
     type: DataTypes.STRING,
     allowNULL: false,
     validate: {
       notEmpty: true,
     },
   },
-
   email: {
     type: DataTypes.STRING,
     allowNULL: false,
@@ -26,82 +25,43 @@ const Doctor = sequelize.define("Doctor", {
       notEmpty: true,
     },
   },
-
-  city: {
+  BookedBy: {
     type: DataTypes.STRING,
     allowNULL: false,
     validate: {
       notEmpty: true,
     },
   },
-
-  qualification: {
+  slot: {
     type: DataTypes.STRING,
     allowNULL: false,
     validate: {
       notEmpty: true,
     },
   },
-
-  specialization: {
-    type: DataTypes.STRING,
+  status: {
+    type: DataTypes.BOOLEAN,
     allowNULL: false,
     validate: {
       notEmpty: true,
     },
   },
-
-  experience: {
-    type: DataTypes.STRING,
+  rating: {
+    type: DataTypes.INTEGER,
     allowNULL: false,
     validate: {
       notEmpty: true,
     },
   },
-
-  fee: {
-    type: DataTypes.STRING,
-    allowNULL: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
-
-  phoneNumber: {
-    type: DataTypes.STRING,
-    allowNULL: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
-
-  password: {
-    type: DataTypes.STRING,
-    allowNULL: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
-
-  filename: {
-    type: DataTypes.STRING,
-    allowNULL: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
-
-
-
 });
 
 sequelize
   .sync()
   .then(() => {
-    console.log("Doctor table created successfully!");
+    console.log("Slots table created successfully!");
   })
   .catch((error) => {
     console.error("Unable to create table : ", error);
   });
 
-module.exports = Doctor;
+module.exports = Slots;

@@ -5,21 +5,18 @@ import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router-dom";
 import useCookies from "react-cookie/cjs/useCookies";
 
-
-
-
-
-
 const SignUp = () => {
-
-  const [cookies, setCookie] = useCookies(['user']);
+  const [cookies, setCookie] = useCookies(["user"]);
   const navigate = useNavigate();
-  const [resStatus, setresStatus]= useState(null); 
+  const [resStatus, setresStatus] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     city: "",
     qualification: "",
+    specialization: "",
+    experience: "",
+    fee: "",
     phoneNumber: "",
     password: "",
     confirmPassword: "",
@@ -55,7 +52,10 @@ const SignUp = () => {
       formData.phoneNumber !== "" &&
       formData.password !== "" &&
       formData.confirmPassword !== "" &&
-      profilePic !== null
+      profilePic !== null &&
+      formData.specialization !== "" &&
+      formData.experience !== "" &&
+      formData.fee !== ""
     ) {
       if (formData.password === formData.confirmPassword) {
         if (
@@ -69,14 +69,16 @@ const SignUp = () => {
           data.append("email", formData.email);
           data.append("city", formData.city);
           data.append("qualification", formData.qualification);
+          data.append("specialization", formData.specialization);
+          data.append("experience", formData.experience);
+          data.append("fee", formData.fee);
+
           data.append("phoneNumber", formData.phoneNumber);
           data.append("password", formData.password);
-        
-        
+
           fetch("http://localhost:5000/api/user/signUp", {
             method: "post",
             body: data,
-            
           })
             .then((res) => {
               setresStatus(res.status);
@@ -85,9 +87,10 @@ const SignUp = () => {
             })
             .then((resBody) => {
               console.log(resBody);
-              setCookie('token', resBody.authToken,{path:'/'});
-              navigate(`${resBody.nextroute}`,{state:{email:resBody.email}});
-
+              setCookie("token", resBody.authToken, { path: "/" });
+              navigate(`${resBody.nextroute}`, {
+                state: { email: resBody.email },
+              });
             })
             .catch((err) => {
               console.log("error: " + err);
@@ -95,15 +98,20 @@ const SignUp = () => {
               setErrorMessage(`ERROR: ${resStatus}`);
               handleShow();
             })
-            .finally(()=>{ setFormData({
-              name: "",
-              email: "",
-              city: "",
-              qualification: "",
-              phoneNumber: "",
-              password: "",
-              confirmPassword: "",
-            }) })
+            .finally(() => {
+              setFormData({
+                name: "",
+                email: "",
+                city: "",
+                qualification: "",
+                phoneNumber: "",
+                password: "",
+                confirmPassword: "",
+                specialization: "",
+                experience: "",
+                fee: "",
+              });
+            });
         } else {
           setErrorMessage("Enter valid phone nummber ");
           handleShow();
@@ -218,6 +226,69 @@ const SignUp = () => {
                               onChange={(e) => handleChange(e)}
                               required
                               value={formData.qualification}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="d-flex flex-row align-items-center mb-4">
+                          <i className="fas fa-user fa-lg me-3 fa-fw"></i>
+                          <div className="form-outline flex-fill mb-0">
+                            <label
+                              className="form-label"
+                              hmtlfor="form3Example1c"
+                            >
+                              Specialization
+                            </label>
+                            <input
+                              type="text"
+                              id="form3Example1c"
+                              className="form-control"
+                              name="specialization"
+                              onChange={(e) => handleChange(e)}
+                              required
+                              value={formData.specialization}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="d-flex flex-row align-items-center mb-4">
+                          <i className="fas fa-user fa-lg me-3 fa-fw"></i>
+                          <div className="form-outline flex-fill mb-0">
+                            <label
+                              className="form-label"
+                              hmtlfor="form3Example1c"
+                            >
+                              Experience
+                            </label>
+                            <input
+                              type="text"
+                              id="form3Example1c"
+                              className="form-control"
+                              name="experience"
+                              onChange={(e) => handleChange(e)}
+                              required
+                              value={formData.experience}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="d-flex flex-row align-items-center mb-4">
+                          <i className="fas fa-user fa-lg me-3 fa-fw"></i>
+                          <div className="form-outline flex-fill mb-0">
+                            <label
+                              className="form-label"
+                              hmtlfor="form3Example1c"
+                            >
+                              Fee
+                            </label>
+                            <input
+                              type="text"
+                              id="form3Example1c"
+                              className="form-control"
+                              name="fee"
+                              onChange={(e) => handleChange(e)}
+                              required
+                              value={formData.fee}
                             />
                           </div>
                         </div>
