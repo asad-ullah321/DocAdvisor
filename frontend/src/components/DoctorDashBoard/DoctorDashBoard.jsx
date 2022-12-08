@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 
-
 import userlogo from "../../assets/stethoscope.png";
 import "./navbar.css";
 import Container from "react-bootstrap/Container";
@@ -25,14 +24,12 @@ const DoctorDashboard = () => {
   //const location = useLocation();
   //const email = location.state.email;
   const cookies = new Cookies();
-  
-  
-  
+
   //const [doctors, setDoctors] = useState([1, 2]);
   const [slots, setSlots] = useState(1);
   // const [slotsInput, setSlotsInput] = useState("");
-  const [slotsData, setSlotsData] = useState([{slot: ""}]);
-  const [date, setDate]= useState("");
+  const [slotsData, setSlotsData] = useState([{ slot: "" }]);
+  const [date, setDate] = useState("");
   const handleChange = (i, e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -43,40 +40,33 @@ const DoctorDashboard = () => {
     console.log(slotsData);
   };
 
-
   const manageSlots = (e) => {
     if (slots > e.target.value) {
       let newFormValues = [...slotsData];
-      newFormValues.splice(slots-1, 1);
+      newFormValues.splice(slots - 1, 1);
       setSlotsData(newFormValues);
       setSlots(e.target.value);
-    }
-    else if(slots < e.target.value){
-    setSlotsData([...slotsData, { slot: "" }]);
-    setSlots(e.target.value);
-
+    } else if (slots < e.target.value) {
+      setSlotsData([...slotsData, { slot: "" }]);
+      setSlots(e.target.value);
     }
   };
 
-
-
-  const postSlots=()=>{
-    if(date!=="")
-    {
+  const postSlots = () => {
+    if (date !== "") {
       for (let index = 0; index < slotsData.length; index++) {
-        for (let j = index+1; j < slotsData.length; j++) {
-          if(slotsData[index].slot === slotsData[j].slot)
-          {
+        for (let j = index + 1; j < slotsData.length; j++) {
+          if (slotsData[index].slot === slotsData[j].slot) {
             console.log("same");
-          return false;
+            return false;
           }
         }
-        
       }
       const token = cookies.get("token");
       console.log(token);
       const data = JSON.stringify({
-        date, slotsData
+        date,
+        slotsData,
       });
       console.log(data);
       fetch("http://localhost:5000/api/user/addSlots", {
@@ -85,8 +75,7 @@ const DoctorDashboard = () => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-        "auth-token": token,
-
+          "auth-token": token,
 
           // 'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -99,19 +88,144 @@ const DoctorDashboard = () => {
         })
         .then((resBody) => {
           console.log(resBody);
-          
         })
-        .catch((err) => {
-          
-        })
-        .finally(() => {
-          
-        });
+        .catch((err) => {})
+        .finally(() => {});
     }
+  };
+
+
+  /* fecth all appointments */
+  const [appointment, setappointment] = useState([]);
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [replies, setreplies] = useState([]);
+  const [replyCommentid, setreplyCommentid] = useState([]);
+  const fetchappointments = () => {
+    const token = cookies.get("token");
+    console.log(token);
+
+    fetch("http://localhost:5000/api/user/fetchappointmentsdoc", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "auth-token": token,
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) return res.json();
+        else throw new Error(res.status);
+      })
+      .then((resBody) => {
+        setappointment(resBody.data);
+        console.log(resBody.data);
+      })
+      .catch((err) => {});
+  };
+  useEffect(() => {
+    fetchappointments();
+  }, []);
+
+  const fetchreply = (obj) => {
+      setreplies([]);
+      const token = cookies.get("token");
+      console.log(token);
+      const data = JSON.stringify({ Cid: obj.id });
+      fetch("http://localhost:5000/api/user/fetchreply", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "auth-token": token,
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: data,
+      })
+        .then((res) => {
+          if (res.status === 200) return res.json();
+          else throw new Error(res.status);
+        })
+        .then((resBody) => {
+          console.log(resBody.message);
+          setreplies(resBody.data);
+          
+        })
+        .catch((err) => {});
     
-  }
+  };
+
+  const addreply = (obj) => {
+    if (comment !== "") {
+      let currentDate = new Date().toJSON().slice(0, 10);
+
+      const token = cookies.get("token");
+      console.log(token);
+      const data = JSON.stringify({
+        date: currentDate,
+        reply: comment,
+        Did: obj.email,
+        Cid: obj.id,
+        replyby:"doctor"
+      });
+      fetch("http://localhost:5000/api/user/addreply", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "auth-token": token,
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: data,
+      })
+        .then((res) => {
+          if (res.status === 200) return res.json();
+          else throw new Error(res.status);
+        })
+        .then((resBody) => {
+          console.log(resBody.message);
+          setComment("");
+          fetchreply(obj);
+        })
+        .catch((err) => {});
+    }
+  };
+
+ 
+
+  const fetchComments = (obj) => {
+    const token = cookies.get("token");
+    console.log(token);
+    const data = JSON.stringify({ Pid: obj.BookedBy });
+    fetch("http://localhost:5000/api/user/fetchcommentdoc", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "auth-token": token,
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: data,
+    })
+      .then((res) => {
+        if (res.status === 200) return res.json();
+        else throw new Error(res.status);
+      })
+      .then((resBody) => {
+        console.log(resBody.message);
+        setComments(resBody.data);
+      })
+      .catch((err) => {});
+  };
+
+  
+
+
+
 
   const [show, setShow] = useState(false);
+  const [cmtid, setcmtId] = useState(null);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -215,7 +329,12 @@ const DoctorDashboard = () => {
               <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Date</Form.Label>
-                  <Form.Control type="date" value={date} placeholder="Enter date" onChange={(e)=>setDate(e.target.value)}/>
+                  <Form.Control
+                    type="date"
+                    value={date}
+                    placeholder="Enter date"
+                    onChange={(e) => setDate(e.target.value)}
+                  />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -245,7 +364,7 @@ const DoctorDashboard = () => {
                     />
                   </Form.Group>
                 ))}
-                <Button onClick={postSlots} variant="primary" >
+                <Button onClick={postSlots} variant="primary">
                   Submit
                 </Button>
               </Form>
@@ -266,6 +385,112 @@ const DoctorDashboard = () => {
           <Card.Body>
             <Card.Title>Patients Records</Card.Title>
 
+            <Container className="m-5">
+              {appointment.map((ap, i) => (
+                <Card style={{}} key={ap.id} className="my-4">
+                  <Card.Body>
+                    <Card.Header className="fw-bold">
+                      Appointment {i + 1}
+                    </Card.Header>
+                    <Card.Text className="container pt-2">
+                      <div>Patient's mail: {ap.email}</div>
+                      <div>Date: {ap.date}</div>
+                      <div>Time: {ap.slot}</div>
+                    </Card.Text>
+                    <Accordion>
+                      <Accordion.Item eventKey="0">
+                        <Accordion.Header
+                          variant="Light"
+                          style={{
+                            fontSize: ".6rem",
+                          }}
+                          onClick={() => {
+                            console.log("fetch");
+                            fetchComments(ap);
+                          }}
+                        >
+                          Details
+                        </Accordion.Header>
+                        <Accordion.Body>
+                          
+
+                          {/* comments */}
+                          <Container className="px-4">
+                            {comments.map((cmt) => {
+                              if (cmt.Doctorid === ap.email) {
+                                return (
+                                  <Alert
+                                    variant="light"
+                                    style={{
+                                      fontSize: ".75rem",
+                                      backgroundColor: "#D3D3D3",
+                                    }}
+                                  >
+                                    <div
+                                      className="fw-bold mb-1"
+                                      style={{ fontSize: ".8rem" }}
+                                    >
+                                      {cmt.Date}
+                                    </div>
+                                    <div className="ps-3">{cmt.Comment}</div>
+                                    <Alert.Link className="pe-4" onClick={() => fetchreply(cmt)}>
+                                      replies
+                                    </Alert.Link>
+                                    <Alert.Link onClick={() => {show ? setShow(false): setShow(true); setcmtId(cmt.id)}}>
+                                      reply
+                                    </Alert.Link>
+                                    {
+                                      show ? cmtid === cmt.id ?<InputGroup className="mb-3">
+                                      <Form.Control
+                                        placeholder="Write a comment here"
+                                        aria-label="Recipient's username"
+                                        aria-describedby="basic-addon2"
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
+                                      />
+                                      <Button
+                                        variant="warning"
+                                        className="fs-5 px-4"
+                                        style={{ color: "white" }}
+                                        id="button-addon2"
+                                        onClick={() => {addreply(cmt); setShow(false)}}
+                                      >
+                                        Add
+                                      </Button>
+                                  </InputGroup> : null:null}
+                                  
+                                    {replies.map((r) => {
+                                      if (r.Commentid === cmt.id) {
+                                        return (
+                                          <div>
+                                            <div
+                                              className="fw-bold mb-1"
+                                              style={{ fontSize: ".8rem" }}
+                                            >
+                                              Replied by {r.ReplyBy}
+                                            </div>
+                                            <div className="ps-3">
+                                              {r.Reply}
+                                            </div>
+                                          </div>
+                                        );
+                                      }
+
+                                      return null;
+                                    })}
+
+                                  </Alert>
+                                );
+                              } else return null;
+                            })}
+                          </Container>
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    </Accordion>
+                  </Card.Body>
+                </Card>
+              ))}
+            </Container>
             <Card.Text></Card.Text>
           </Card.Body>
         </Card>
