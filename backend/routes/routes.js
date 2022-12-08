@@ -8,11 +8,9 @@ const pasResetContr = require('../controllers/passwordReset')
 const doctorContr = require('../controllers/doctor')
 const patientContr = require('../controllers/patient')
 const regPateint = require('../controllers/signupPat.control');
-const signinContr = require('../controllers/signin.contr');
 const signinPat = require('../controllers/signinPat');
 const signinAdmin = require('../controllers/signinAdmin');
 const adminControl = require('../controllers/admin.control');
-const pasResetContr = require('../controllers/passwordReset');
 const pasResetContrPat = require('../controllers/passwordResetPat')
 const cookieParser = require("cookie-parser");
 const session = require('express-session');
@@ -20,7 +18,7 @@ const session = require('express-session');
 const { verifyAuth } = require("../middleware/auth.js");
 const { verifyAuthPat } = require("../middleware/authPat.js");
 const { verifyAuthAdmin } = require("../middleware/authAdmin.js");
-
+const  DocAptContr = require('../controllers/docAppoitnments')
 router.use(cookieParser());
 
 /*router.use(
@@ -86,6 +84,10 @@ router.post("/rating", patientContr.rating)
 
 
 
+
+  router.post("/fetchappointmentsdoc", DocAptContr.fetchappointments)
+  router.post("/fetchcommentdoc", DocAptContr.fetchcomments)
+  router.post("/addreply", DocAptContr.addreply)
 
 
 
