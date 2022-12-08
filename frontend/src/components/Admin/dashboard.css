@@ -1,0 +1,17 @@
+.textmain{
+    margin-top: 10rem;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:#e58910;
+
+}
+.textmain1{
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:#12126a;
+
+}

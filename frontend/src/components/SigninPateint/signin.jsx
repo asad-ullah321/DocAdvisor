@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./sigin.css";
+import "./siginP.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useCookies from "react-cookie/cjs/useCookies";
 import { Modal } from "react-bootstrap";
+import loginImg from "../../assets/s-2.png"
 
 const SignIn = () => {
   const [cookies, setCookie] = useCookies(["user"]);
@@ -36,8 +37,7 @@ const SignIn = () => {
         password: formData.password,
       });
 
-
-      fetch("http://localhost:5000/api/user/signin", {
+      fetch("http://localhost:5000/api/user/signinPat", {
         method: "post",
 
         headers: {
@@ -65,10 +65,6 @@ const SignIn = () => {
           } 
           else if (resBody.nextroute === "/signup" || resBody.nextroute ==='/signin') 
           {
-            setFormData({
-              email: "",
-              password: "",
-            });
             setErrorMessage('Invalid email or password');
             handleShow();
           }
@@ -80,8 +76,8 @@ const SignIn = () => {
         })
         .catch((err) => {
           console.log("error: " + err);
-          navigate("/signin");
-          setErrorMessage(`ERRORD: ${resStatus}`);
+          navigate("/signup");
+          setErrorMessage(`ERROR: ${resStatus}`);
           handleShow();
         })
         .finally(() => {
@@ -100,7 +96,7 @@ const SignIn = () => {
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-md-9 col-lg-6 col-xl-5">
               <img
-                src="https://d1t78adged64l7.cloudfront.net/frontend/assets/images/s-2.png"
+                src={loginImg} alt="menu image"
                 className="img-fluid"
               />
             </div>
@@ -108,7 +104,7 @@ const SignIn = () => {
               <form>
                 <div className="divider d-flex align-items-center my-4">
                   <p className="text-center fw-bold mx-3 mb-0 fs-4">
-                    <span style={{ color: "#ff9e15" }}>
+                    <span style={{ color: "#2f96db" }}>
                       <span className="fs-3">D</span>oc
                     </span>
                     <span className="fs-3">A</span>dvisor.com
@@ -130,7 +126,6 @@ const SignIn = () => {
                     className="form-control form-control-md"
                     placeholder="Enter a valid email address"
                     onChange={(e) => handleChange(e)}
-                    value={formData.email}
                   />
                 </div>
 
@@ -146,15 +141,13 @@ const SignIn = () => {
                     className="form-control form-control-md"
                     placeholder="Enter password"
                     onChange={(e) => handleChange(e)}
-                    value={formData.password}
-                    
                   />
                 </div>
 
                 <div className="d-flex justify-content-between align-items-center">
                   {/*<!-- Checkbox -->*/}
 
-                  <Link to="/signin/forget/v1" className="text-body">
+                  <Link to={"/signin/forget/v1Pat"} className="text-body">
                     Forgot password?
                   </Link>
                 </div>
@@ -163,14 +156,14 @@ const SignIn = () => {
                   <button
                     type="button"
                     className="btn btn-lg fw-bold px-4 py-2 "
-                    style={{ color: "white", backgroundColor: "#ff9e15" }}
+                    style={{ color: "white", backgroundColor: "#2f96db" }}
                     onClick={postData}
                   >
                     Login
                   </button>
                   <p className="small fw-bold mt-2 pt-1 mb-0">
                     Don't have an account?{" "}
-                    <Link to={"/signup"} className="link-warning">
+                    <Link to={"/signup"} className="link-info">
                       Register
                     </Link>
                   </p>
@@ -179,7 +172,7 @@ const SignIn = () => {
             </div>
           </div>
         </div>
-        <div className="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-color">
+        <div className="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-colorP">
           {/*<!-- Copyright -->*/}
           <div className="text-white mb-3 mb-md-0">
             Copyright © 2022. All rights reserved.

@@ -1,8 +1,8 @@
-const VerCode = require("../models/verCode");
+const VerCode = require("../models/verCodePat");
 const sequelize = require("../configs/db");
 const jwt = require("jsonwebtoken");
 
-verifyAuth = (req, res, next) => {
+verifyAuthPat = (req, res, next) => {
   sequelize
     .sync()
     .then(() => {
@@ -23,7 +23,7 @@ verifyAuth = (req, res, next) => {
               console.log("token: " + token);
 
               return res.status(200).json({
-                nextroute: "/verificationDoc",
+                nextroute: "/verification",
                 email: req.body.email,
                 authToken: token,
               });
@@ -49,8 +49,4 @@ verifyAuth = (req, res, next) => {
 };
 
 
-
-
-
-
-module.exports = {verifyAuth}
+module.exports = {verifyAuthPat}

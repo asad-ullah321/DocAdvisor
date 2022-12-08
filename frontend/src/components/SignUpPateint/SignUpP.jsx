@@ -4,19 +4,22 @@ import "./signup.css";
 import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router-dom";
 import useCookies from "react-cookie/cjs/useCookies";
+import menuImg from "../../assets/s-2.png"
+
+
+
+
+
 
 const SignUp = () => {
-  const [cookies, setCookie] = useCookies(["user"]);
+
+  const [cookies, setCookie] = useCookies(['user']);
   const navigate = useNavigate();
-  const [resStatus, setresStatus] = useState(null);
+  const [resStatus, setresStatus]= useState(null); 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     city: "",
-    qualification: "",
-    specialization: "",
-    experience: "",
-    fee: "",
     phoneNumber: "",
     password: "",
     confirmPassword: "",
@@ -48,14 +51,10 @@ const SignUp = () => {
       formData.name !== "" &&
       formData.email !== "" &&
       formData.city !== "" &&
-      formData.qualification !== "" &&
       formData.phoneNumber !== "" &&
       formData.password !== "" &&
       formData.confirmPassword !== "" &&
-      profilePic !== null &&
-      formData.specialization !== "" &&
-      formData.experience !== "" &&
-      formData.fee !== ""
+      profilePic !== null
     ) {
       if (formData.password === formData.confirmPassword) {
         if (
@@ -68,60 +67,40 @@ const SignUp = () => {
           data.append("name", formData.name);
           data.append("email", formData.email);
           data.append("city", formData.city);
-          data.append("qualification", formData.qualification);
-          data.append("specialization", formData.specialization);
-          data.append("experience", formData.experience);
-          data.append("fee", formData.fee);
-
           data.append("phoneNumber", formData.phoneNumber);
           data.append("password", formData.password);
-
-          fetch("http://localhost:5000/api/user/signUp", {
+        
+        
+          fetch("http://localhost:5000/api/user/signUpPat", {
             method: "post",
             body: data,
+            
           })
             .then((res) => {
               setresStatus(res.status);
-              console.log("First EVER .then Based Answer");
-              console.log(resStatus);
-              if (res.status === 200 || res.status === 250) 
-              {
-                console.log("$$$$$%%hhasdhakjdhahjkdhasjhdjahkd%%%%%%%%%");
-                return res.json();
-              }
-              else 
-              {
-                throw new Error(res.status);
-              }
+              if (res.status === 200) return res.json();
+              else throw new Error(res.status);
             })
             .then((resBody) => {
               console.log(resBody);
-              setCookie("token", resBody.authToken, { path: "/" });
-              navigate(`${resBody.nextroute}`, {
-                state: { email: resBody.email },
-              });
+              setCookie('token', resBody.authToken,{path:'/'});
+              navigate(`${resBody.nextroute}`,{state:{email:resBody.email}});
+
             })
             .catch((err) => {
               console.log("error: " + err);
-              console.log("ONLYYYYYYYYY SHOWWWWWW ERORRRRRRRRRR");
               navigate("/signup");
-              setErrorMessage(`ERROR Ya wala error ha: ${resStatus}`);
+              setErrorMessage(`ERROR: ${resStatus}`);
               handleShow();
             })
-            .finally(() => {
-              setFormData({
-                name: "",
-                email: "",
-                city: "",
-                qualification: "",
-                phoneNumber: "",
-                password: "",
-                confirmPassword: "",
-                specialization: "",
-                experience: "",
-                fee: "",
-              });
-            });
+            .finally(()=>{ setFormData({
+              name: "",
+              email: "",
+              city: "",
+              phoneNumber: "",
+              password: "",
+              confirmPassword: "",
+            }) })
         } else {
           setErrorMessage("Enter valid phone nummber ");
           handleShow();
@@ -152,7 +131,7 @@ const SignUp = () => {
                       <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
                         Sign up as
                         <br />
-                        Doctor
+                        Patient
                       </p>
 
                       <form className="mx-1 mx-md-4">
@@ -219,89 +198,6 @@ const SignUp = () => {
                           </div>
                         </div>
 
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-user fa-lg me-3 fa-fw"></i>
-                          <div className="form-outline flex-fill mb-0">
-                            <label
-                              className="form-label"
-                              hmtlfor="form3Example1c"
-                            >
-                              Qualification
-                            </label>
-                            <input
-                              type="text"
-                              id="form3Example1c"
-                              className="form-control"
-                              name="qualification"
-                              onChange={(e) => handleChange(e)}
-                              required
-                              value={formData.qualification}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-user fa-lg me-3 fa-fw"></i>
-                          <div className="form-outline flex-fill mb-0">
-                            <label
-                              className="form-label"
-                              hmtlfor="form3Example1c"
-                            >
-                              Specialization
-                            </label>
-                            <input
-                              type="text"
-                              id="form3Example1c"
-                              className="form-control"
-                              name="specialization"
-                              onChange={(e) => handleChange(e)}
-                              required
-                              value={formData.specialization}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-user fa-lg me-3 fa-fw"></i>
-                          <div className="form-outline flex-fill mb-0">
-                            <label
-                              className="form-label"
-                              hmtlfor="form3Example1c"
-                            >
-                              Experience
-                            </label>
-                            <input
-                              type="text"
-                              id="form3Example1c"
-                              className="form-control"
-                              name="experience"
-                              onChange={(e) => handleChange(e)}
-                              required
-                              value={formData.experience}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-user fa-lg me-3 fa-fw"></i>
-                          <div className="form-outline flex-fill mb-0">
-                            <label
-                              className="form-label"
-                              hmtlfor="form3Example1c"
-                            >
-                              Fee
-                            </label>
-                            <input
-                              type="text"
-                              id="form3Example1c"
-                              className="form-control"
-                              name="fee"
-                              onChange={(e) => handleChange(e)}
-                              required
-                              value={formData.fee}
-                            />
-                          </div>
-                        </div>
 
                         <div className="d-flex flex-row align-items-center mb-4">
                           <i className="fas fa-user fa-lg me-3 fa-fw"></i>
@@ -415,7 +311,7 @@ const SignUp = () => {
                     </div>
                     <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
                       <img
-                        src="https://d1t78adged64l7.cloudfront.net/frontend/assets/images/s-2.png"
+                        src={menuImg}
                         className="img-fluid"
                       />
                     </div>

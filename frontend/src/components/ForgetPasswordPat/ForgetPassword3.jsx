@@ -4,70 +4,79 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import useCookies from "react-cookie/cjs/useCookies";
 import Cookies from "universal-cookie";
-import "./verification.css";
+
 import { Modal } from "react-bootstrap";
 
-const Verification = () => {
+const ForgetPassword3 = () => {
   const cookies = new Cookies();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [codeInput, setCodeInput] = useState({ code: "" });
+  const [password, setpassword] = useState({ password: "" });
+  const [crpassword, setcrpassword] = useState({ password: "" });
+
   const [resStatus, setresStatus] = useState();
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state.email;
   const handleChange = (e) => {
-    setCodeInput({ code: e.target.value });
+    if (e.target.name === "password") setpassword({ password: e.target.value });
+    else setcrpassword({ password: e.target.value });
 
-    console.log(codeInput);
+    console.log(password.password + crpassword.password);
   };
 
   const postCode = () => {
-    console.log(codeInput);
+    console.log(password.password);
     const token = cookies.get("token");
     console.log(token);
-    const data = JSON.stringify(codeInput);
+    const data = JSON.stringify(password);
     console.log(data);
 
+    if (password.password === crpassword.password) {
+      fetch("http://localhost:5000/api/user/signin/forget/v3Pat", {
+        method: "post",
 
-    fetch("http://localhost:5000/api/user/verifypat", {
-      method: "post",
-
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "auth-token": token,
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: data,
-    })
-      .then((res) => {
-        setresStatus(res.status);
-        if (res.status === 200) return res.json();
-        else throw new Error(res.status);
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "auth-token": token,
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: data,
       })
-      .then((resBody) => {
-        console.log(resBody);
-        if (resBody.verifybit === 1) navigate(`${resBody.nextroute}`);
-        else if (resBody.verifybit === 0) {
-          navigate(`${resBody.nextroute}`, {
+        .then((res) => {
+          setresStatus(res.status);
+          if (res.status === 200) return res.json();
+          else throw new Error(res.status);
+        })
+        .then((resBody) => {
+          console.log(resBody);
+          if (resBody.resetBit === 1) 
+          {
+            navigate(`${resBody.nextroute}`, {
+              state: { email: resBody.email },
+            });
+          }
+          else if(resBody.resetBit===0)
+          {
+            navigate(`${resBody.nextroute}`)
+          }
+        })
+        .catch((err) => {
+          //console.log("error: " + err);
+          navigate("/signin/forget/v3Pat", {
             state: { email: location.state.email },
           });
-          setErrorMessage("Invalid code entered");
-          handleShow();
-        }
-      })
-      .catch((err) => {
-        console.log("error: " + err);
-        navigate("/verification", {
-          state: { email: location.state.email },
+          setErrorMessage("Internal Server Error");
+          // handleShow();
         });
-        //setErrorMessage(`ERROR: ${resStatus}`);
-        // handleShow();
-      });
+    } else {
+      setErrorMessage("Password Mismatch");
+      handleShow();
+    }
   };
 
   return (
@@ -83,11 +92,8 @@ const Verification = () => {
                 <div className="card-body p-md-5">
                   <div className="row justify-content-center">
                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                      <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                        Account Verification
-                      </p>
-                      <p className="text-start h5 mb-5 mx-1 mx-md-4 mt-4">
-                        Verify your account {email};
+                      <p className="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">
+                        Reset Password
                       </p>
 
                       <form className="mx-1 mx-md-4">
@@ -98,33 +104,53 @@ const Verification = () => {
                               className="form-label"
                               hmtlfor="form3Example1c"
                             >
-                              <strong> Verification Code </strong>
+                              <strong>New Password </strong>
                             </label>
                             <input
-                              type="text"
+                              type="password"
                               id="form3Example1c"
                               className="form-control"
-                              name="name"
+                              name="password"
                               onChange={(e) => handleChange(e)}
-                              value={codeInput.code}
+                              value={password.password}
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="d-flex flex-row align-items-center mb-4">
+                          <i className="fas fa-user fa-lg me-3 fa-fw"></i>
+                          <div className="form-outline flex-fill mb-0">
+                            <label
+                              className="form-label"
+                              hmtlfor="form3Example1c"
+                            >
+                              <strong>Confirm Password </strong>
+                            </label>
+                            <input
+                              type="password"
+                              id="form3Example1c"
+                              className="form-control"
+                              name="confirm password"
+                              onChange={(e) => handleChange(e)}
+                              value={crpassword.password}
                               required
                             />
                           </div>
                         </div>
 
                         <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                          <button
+                          {/* <button
                             type="button"
                             className="btn btn-primary btn-lg me-2"
                           >
                             Resend code
-                          </button>
+                        </button>*/}
                           <button
                             type="button"
                             className="btn btn-primary btn-lg"
                             onClick={postCode}
                           >
-                            Verify
+                            Reset
                           </button>
                         </div>
                       </form>
@@ -135,6 +161,9 @@ const Verification = () => {
                         className="img-fluid"
                       />
                     </div>
+                    <p className="text-end mx-md-4 ">
+                      <strong>{email}</strong>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -154,4 +183,4 @@ const Verification = () => {
   );
 };
 
-export default Verification;
+export default ForgetPassword3;

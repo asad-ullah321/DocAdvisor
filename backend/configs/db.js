@@ -1,10 +1,10 @@
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(
  'docadvisor',
- 'root',
- '',
+  'newuser',
+  'ABCD@1234',
   {
-    host: 'localhost',
+    host: '',
     dialect: 'mysql'
   }
 );

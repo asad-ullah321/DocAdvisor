@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import useCookies from "react-cookie/cjs/useCookies";
 import Cookies from "universal-cookie";
-import "./verification.css";
+
 import { Modal } from "react-bootstrap";
 
-const Verification = () => {
+
+const ForgetPassword2 = () => {
   const cookies = new Cookies();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -33,7 +34,7 @@ const Verification = () => {
     console.log(data);
 
 
-    fetch("http://localhost:5000/api/user/verifypat", {
+    fetch("http://localhost:5000/api/user/signin/forget/v2Pat", {
       method: "post",
 
       headers: {
@@ -51,7 +52,10 @@ const Verification = () => {
       })
       .then((resBody) => {
         console.log(resBody);
-        if (resBody.verifybit === 1) navigate(`${resBody.nextroute}`);
+        if (resBody.verifybit === 1) 
+            navigate(`${resBody.nextroute}`, {
+                state: { email: location.state.email },
+              });
         else if (resBody.verifybit === 0) {
           navigate(`${resBody.nextroute}`, {
             state: { email: location.state.email },
@@ -61,11 +65,11 @@ const Verification = () => {
         }
       })
       .catch((err) => {
-        console.log("error: " + err);
-        navigate("/verification", {
+        //console.log("error: " + err);
+        navigate("/signin/forget/v2Pat", {
           state: { email: location.state.email },
         });
-        //setErrorMessage(`ERROR: ${resStatus}`);
+        setErrorMessage('Internal Server Error');
         // handleShow();
       });
   };
@@ -83,11 +87,11 @@ const Verification = () => {
                 <div className="card-body p-md-5">
                   <div className="row justify-content-center">
                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                      <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                        Account Verification
+                      <p className="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">
+                        Recovery Code
                       </p>
                       <p className="text-start h5 mb-5 mx-1 mx-md-4 mt-4">
-                        Verify your account {email};
+                        Enter recovery code for {email}
                       </p>
 
                       <form className="mx-1 mx-md-4">
@@ -113,12 +117,12 @@ const Verification = () => {
                         </div>
 
                         <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                          <button
+                         {/* <button
                             type="button"
                             className="btn btn-primary btn-lg me-2"
                           >
                             Resend code
-                          </button>
+                        </button>*/}
                           <button
                             type="button"
                             className="btn btn-primary btn-lg"
@@ -154,4 +158,4 @@ const Verification = () => {
   );
 };
 
-export default Verification;
+export default ForgetPassword2;

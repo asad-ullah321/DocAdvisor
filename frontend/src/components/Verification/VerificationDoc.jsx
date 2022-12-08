@@ -7,7 +7,7 @@ import Cookies from "universal-cookie";
 import "./verification.css";
 import { Modal } from "react-bootstrap";
 
-const Verification = () => {
+const VerificationDoc = () => {
   const cookies = new Cookies();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -33,7 +33,7 @@ const Verification = () => {
     console.log(data);
 
 
-    fetch("http://localhost:5000/api/user/verifypat", {
+    fetch("http://localhost:5000/api/user/verify", {
       method: "post",
 
       headers: {
@@ -62,7 +62,7 @@ const Verification = () => {
       })
       .catch((err) => {
         console.log("error: " + err);
-        navigate("/verification", {
+        navigate("/verificationDoc", {
           state: { email: location.state.email },
         });
         //setErrorMessage(`ERROR: ${resStatus}`);
@@ -154,4 +154,4 @@ const Verification = () => {
   );
 };
 
-export default Verification;
+export default VerificationDoc;

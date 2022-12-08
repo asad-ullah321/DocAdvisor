@@ -2,8 +2,8 @@
 //const connection = require('../configs/db');
 const fs = require("fs");
 const transporter = require("../configs/mailTranspoter");
-const Doctor = require("../models/doctor");
-const VerCode = require("../models/verCode");
+const Patient = require("../models/pateint");
+const VerCode = require("../models/verCodePat");
 const sequelize = require("../configs/db");
 const jwt = require("jsonwebtoken");
 
@@ -18,7 +18,6 @@ const signUp = (req, res) => {
 
     let filetype = req.file.mimetype.split("/")[1];
     let newFileName = `${req.file.filename}.${req.body.email}.${filetype}`;
-    console.log("$$$$$%%%%%%%%%%%%%%%$$$$$$$$$$$$$$$$$$$$$$$$$$$%%%%%%%%%%%%%%%%");
 
     //making object of DATA
     const formData = {
@@ -26,9 +25,6 @@ const signUp = (req, res) => {
       email: req.body.email,
       city: req.body.city,
       qualification: req.body.qualification,
-      specialization: req.body.specialization,
-      experience: req.body.experience,
-      fee: req.body.fee,
       phoneNumber: req.body.phoneNumber,
       password: req.body.password,
       filename: newFileName,
@@ -46,21 +42,17 @@ const signUp = (req, res) => {
           .sync()
           .then(() => {
             console.log("Table created successfully!"); //saving doc data
-            Doctor.create({
+            Patient.create({
               name: formData.name,
               email: formData.email,
               city: formData.city,
-              qualification: formData.qualification,
-              specialization: formData.specialization,
-              experience: formData.experience,
-              fee: formData.fee,
               phoneNumber: formData.phoneNumber,
               password: formData.password,
               filename: formData.filename,
             })
               .then(() => {
                 // console.log(res);
-                console.log("data of docotor saved");
+                console.log("data of Pateint  saved");
              
                 const verCode = generateCode(); //saving verCode
                 VerCode.create({
@@ -77,9 +69,7 @@ const signUp = (req, res) => {
                       { code: verCode },
                       function (err, html) {
                         const mailOptions = {
-                         // from: "docadvisormail@gmail.com", // sender address
-
-                         from: "docadvisormail@gmail.com",
+                          from: "docadvisormail@gmail.com", // sender address
                           to: req.body.email, // list of receivers
                           subject: `Welcome to DocAdvisor`, // Subject line
                           html: html,
@@ -101,8 +91,8 @@ const signUp = (req, res) => {
                           //if(err)
                           //console.log(err);
                           //res when all goes well
-                          res.status(250).json({
-                            nextroute: "/verificationDoc",
+                          res.status(200).json({
+                            nextroute: "/verification",
                             email: req.body.email,
                             authToken: token,
                           });
@@ -196,11 +186,11 @@ const Verify = (req, res) => {
                 { where: { email: data.email } }
               )
                 .then((data) => {
-              res.status(200).json({ verifybit: 1, nextroute: "/" });
+              res.status(200).json({ verifybit: 1, nextroute: "/signin/pateint" });
                 });
             }
             else{
-              res.status(200).json({ verifybit: 0, nextroute: "/verificationDoc" });
+              res.status(200).json({ verifybit: 0, nextroute: "/verification" });
             }
           })
           .catch((error) => {

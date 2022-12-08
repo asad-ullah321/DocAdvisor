@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useCookies from "react-cookie/cjs/useCookies";
 import { Modal } from "react-bootstrap";
 
-const SignIn = () => {
+const AdminSignin = () => {
   const [cookies, setCookie] = useCookies(["user"]);
   const navigate = useNavigate();
   const [resStatus, setresStatus] = useState(null);
@@ -36,8 +36,7 @@ const SignIn = () => {
         password: formData.password,
       });
 
-
-      fetch("http://localhost:5000/api/user/signin", {
+      fetch("http://localhost:5000/api/user/signinAdmin", {
         method: "post",
 
         headers: {
@@ -55,7 +54,7 @@ const SignIn = () => {
         })
         .then((resBody) => {
           console.log(resBody);
-          if (resBody.nextroute === "/verification") 
+          if (resBody.nextroute === "/verificationAdmin") 
           {
           setCookie("token", resBody.authToken, { path: "/" });
             navigate(`${resBody.nextroute}`, {
@@ -63,25 +62,21 @@ const SignIn = () => {
             });
 
           } 
-          else if (resBody.nextroute === "/signup" || resBody.nextroute ==='/signin') 
+          else if ( resBody.nextroute ==='/signin') 
           {
-            setFormData({
-              email: "",
-              password: "",
-            });
             setErrorMessage('Invalid email or password');
             handleShow();
           }
-          else if(resBody.nextroute==='/')
+          else if(resBody.nextroute==='/admindashBoard')
           {
-          setCookie("token", resBody.authToken, { path: "/" });
+          setCookie("token", resBody.authToken, { path: "/admindashBoard" });
           navigate(`${resBody.nextroute}`, {state: { email: resBody.email }});
           }
         })
         .catch((err) => {
           console.log("error: " + err);
-          navigate("/signin");
-          setErrorMessage(`ERRORD: ${resStatus}`);
+          navigate("/signup");
+          setErrorMessage(`ERROR: ${resStatus}`);
           handleShow();
         })
         .finally(() => {
@@ -130,7 +125,6 @@ const SignIn = () => {
                     className="form-control form-control-md"
                     placeholder="Enter a valid email address"
                     onChange={(e) => handleChange(e)}
-                    value={formData.email}
                   />
                 </div>
 
@@ -146,17 +140,15 @@ const SignIn = () => {
                     className="form-control form-control-md"
                     placeholder="Enter password"
                     onChange={(e) => handleChange(e)}
-                    value={formData.password}
-                    
                   />
                 </div>
 
                 <div className="d-flex justify-content-between align-items-center">
                   {/*<!-- Checkbox -->*/}
 
-                  <Link to="/signin/forget/v1" className="text-body">
+                  <a onClick={""} className="text-body">
                     Forgot password?
-                  </Link>
+                  </a>
                 </div>
 
                 <div className="text-center text-lg-start mt-4 pt-2">
@@ -217,4 +209,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default AdminSignin;

@@ -7,10 +7,19 @@ const signinContr = require('../controllers/signin.contr')
 const pasResetContr = require('../controllers/passwordReset')
 const doctorContr = require('../controllers/doctor')
 const patientContr = require('../controllers/patient')
+const regPateint = require('../controllers/signupPat.control');
+const signinContr = require('../controllers/signin.contr');
+const signinPat = require('../controllers/signinPat');
+const signinAdmin = require('../controllers/signinAdmin');
+const adminControl = require('../controllers/admin.control');
+const pasResetContr = require('../controllers/passwordReset');
+const pasResetContrPat = require('../controllers/passwordResetPat')
 const cookieParser = require("cookie-parser");
 const session = require('express-session');
 
 const { verifyAuth } = require("../middleware/auth.js");
+const { verifyAuthPat } = require("../middleware/authPat.js");
+const { verifyAuthAdmin } = require("../middleware/authAdmin.js");
 
 router.use(cookieParser());
 
@@ -43,8 +52,20 @@ router.use(bodyParser.json());
 
 
 router.post("/signUp",upload.single("profilepic"),regContr.signUp);
+router.post("/signUpPat",upload.single("profilepic"),regPateint.signUp);
+
+
 router.post("/verify", regContr.Verify);
+router.post("/verifypat", regPateint.Verify);
+//router.post("/verifyAdmin", regPateint.Verify);
+
+
 router.post("/signin",[verifyAuth] ,signinContr.signin);
+router.post("/signinPat",[verifyAuthPat] ,signinPat.signin);
+router.post("/signinAdmin",[verifyAuthAdmin] ,signinAdmin.signin);
+
+
+
 router.post("/signin/forget/v1", pasResetContr.sendRecoveryCode);
 router.post("/signin/forget/v2", pasResetContr.verifyRecoveryCode);
 router.post("/signin/forget/v3", pasResetContr.resetPassword);
@@ -71,6 +92,14 @@ router.post("/rating", patientContr.rating)
 
 
 
+
+router.post("/signin/forget/v1Pat", pasResetContrPat.sendRecoveryCode);
+router.post("/signin/forget/v2Pat", pasResetContrPat.verifyRecoveryCode);
+router.post("/signin/forget/v3Pat", pasResetContrPat.resetPassword);
+
+
+router.post("/RemoveDoc",[verifyAuthAdmin] ,adminControl.removeDoctor);
+router.post("/insertMed",[verifyAuthAdmin] ,adminControl.insertMed);
 
 
 

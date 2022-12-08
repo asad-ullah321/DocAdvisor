@@ -3,43 +3,45 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import useCookies from "react-cookie/cjs/useCookies";
+
 import Cookies from "universal-cookie";
-import "./verification.css";
+import loginImg from "../../assets/s-2.png"
+
 import { Modal } from "react-bootstrap";
 
-const Verification = () => {
-  const cookies = new Cookies();
+const ForgetPassword1 = () => {
+  const getcookies = new Cookies();
+  const [cookies, setCookie] = useCookies(['user']);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [codeInput, setCodeInput] = useState({ code: "" });
+  const [accountInput, setaccountInput] = useState({ email: "" });
   const [resStatus, setresStatus] = useState();
-  const location = useLocation();
+ // const location = useLocation();
   const navigate = useNavigate();
-  const email = location.state.email;
+  //const email = location.state.email;
   const handleChange = (e) => {
-    setCodeInput({ code: e.target.value });
+    setaccountInput({ email: e.target.value });
 
-    console.log(codeInput);
+    console.log(accountInput);
   };
 
-  const postCode = () => {
-    console.log(codeInput);
-    const token = cookies.get("token");
-    console.log(token);
-    const data = JSON.stringify(codeInput);
+
+
+  const postEmail = () => {
+    console.log(accountInput);
+    const data = JSON.stringify(accountInput);
     console.log(data);
 
-
-    fetch("http://localhost:5000/api/user/verifypat", {
+    
+    fetch("http://localhost:5000/api/user/signin/forget/v1Pat", {
       method: "post",
 
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "auth-token": token,
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: data,
@@ -51,20 +53,23 @@ const Verification = () => {
       })
       .then((resBody) => {
         console.log(resBody);
-        if (resBody.verifybit === 1) navigate(`${resBody.nextroute}`);
-        else if (resBody.verifybit === 0) {
-          navigate(`${resBody.nextroute}`, {
-            state: { email: location.state.email },
-          });
-          setErrorMessage("Invalid code entered");
+        if(resBody.validMail===1)
+        {
+          setCookie("token", resBody.authToken, { path: "/" });
+          navigate(`${resBody.nextroute}`,{
+          state: { email: resBody.email },
+        });
+        }
+        else if(resBody.validMail===0)
+        {
+          setErrorMessage('enter valid email');
           handleShow();
         }
+        
       })
       .catch((err) => {
         console.log("error: " + err);
-        navigate("/verification", {
-          state: { email: location.state.email },
-        });
+        navigate("/signin/forget/v1Pat");
         //setErrorMessage(`ERROR: ${resStatus}`);
         // handleShow();
       });
@@ -83,11 +88,11 @@ const Verification = () => {
                 <div className="card-body p-md-5">
                   <div className="row justify-content-center">
                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                      <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                        Account Verification
+                      <p className="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">
+                        Account recovery
                       </p>
-                      <p className="text-start h5 mb-5 mx-1 mx-md-4 mt-4">
-                        Verify your account {email};
+                      <p className="text-start mb-5 mx-1 mx-md-4 mt-4">
+                        Enter your email to get recovery code
                       </p>
 
                       <form className="mx-1 mx-md-4">
@@ -98,41 +103,41 @@ const Verification = () => {
                               className="form-label"
                               hmtlfor="form3Example1c"
                             >
-                              <strong> Verification Code </strong>
+                              <strong>Email</strong>
                             </label>
                             <input
-                              type="text"
+                              type="email"
                               id="form3Example1c"
                               className="form-control"
                               name="name"
                               onChange={(e) => handleChange(e)}
-                              value={codeInput.code}
+                              value={accountInput.email}
                               required
                             />
                           </div>
                         </div>
 
                         <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                          <button
+                          {/*<button
                             type="button"
                             className="btn btn-primary btn-lg me-2"
                           >
                             Resend code
-                          </button>
+                          </button>*/}
                           <button
                             type="button"
                             className="btn btn-primary btn-lg"
-                            onClick={postCode}
+                            onClick={postEmail}
                           >
-                            Verify
+                            Send
                           </button>
                         </div>
                       </form>
                     </div>
                     <div className="col-md-7 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
                       <img
-                        src="https://d1t78adged64l7.cloudfront.net/frontend/assets/images/s-2.png"
-                        className="img-fluid"
+                        src={loginImg}
+                           className="img-fluid"
                       />
                     </div>
                   </div>
@@ -154,4 +159,4 @@ const Verification = () => {
   );
 };
 
-export default Verification;
+export default ForgetPassword1;
