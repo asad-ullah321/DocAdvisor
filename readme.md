@@ -1,13 +1,7 @@
 <a name="readme-top"></a>
 ## DOCADVISOR | Introduction
 
-Arcade is an online web based game store. Where user can buy
-their favourite games through our platform. It will allow gaming much more accessible
-and inclusive of all. This platform
-provides details such as how many users recommended this game, the trailer of game,
-availability on different platforms and so much more.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Web appllication to automate the process of appointment booking, benefiting both patients and doctors.
 
 ## DOCADVISOR | Tools & Technology
 
@@ -20,17 +14,13 @@ availability on different platforms and so much more.
 * <img src="https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white" />
 * <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMS41IC0xMC4yMzE3NCAyMyAyMC40NjM0OCI+CiAgPHRpdGxlPlJlYWN0IExvZ288L3RpdGxlPgogIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIyLjA1IiBmaWxsPSIjNjFkYWZiIi8+CiAgPGcgc3Ryb2tlPSIjNjFkYWZiIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIi8+CiAgICA8ZWxsaXBzZSByeD0iMTEiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgPC9nPgo8L3N2Zz4K" />
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## DOCADVISOR | Prerequisites
 
-These are the softwares you need to install before getting started.
+These are the software you need to install before getting started.
 - NodeJS
 - NPM
 - MySQL
 - REACT.js
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## DOCADVISOR | Installation
 
